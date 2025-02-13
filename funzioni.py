@@ -1,5 +1,28 @@
 import sys
+import os
 import time
+
+def prendiMagazzino() -> dict:
+    files = os.listdir('dati')
+    magazzino = {}
+    
+    for categoria in files:    
+        with open("dati/" + categoria) as f:
+            categoria = categoria.split('.')[0]
+            magazzino[categoria] = {}
+            
+            r = f.readline().strip()
+            while r != "":
+                
+                dati = r.split(';')
+                
+                nomeArticolo = dati[0]
+                qtaArticolo = dati[1]
+                magazzino[categoria][nomeArticolo] = int(qtaArticolo)
+                
+                r = f.readline().strip()
+            
+    return magazzino
 
 def stampaMenu():
     print("--------------------------------------------------------------------")
@@ -13,7 +36,44 @@ def stampaMenu():
     print("|  [0] Per uscire                                                  |")
     print("--------------------------------------------------------------------")
     
+def modificaQta(magazzino: dict, categoria: str, prodotto: str, qtaNuova: int) -> dict:
+    magazzino[categoria][prodotto] = qtaNuova
+    return magazzino
+
+def aggiungiArticolo(magazzino: dict, categoria: str, nomeProdotto: str, qtaProdotto: int) -> dict:
+    magazzino[categoria][nomeProdotto] = qtaProdotto
+    return magazzino
+
+def rimuoviArticolo(magazzino: dict, categoria: str, nomeProdotto: str) -> dict:
+    magazzino[categoria].pop(nomeProdotto)
+    return magazzino
+
+def stampaArticoliCategoria(magazzino: dict, categoria: str) -> str:
+    prodotti = magazzino[categoria].keys()
+    prodottiStr = ""
+    
+    for prodotto in prodotti:
+        prodottiStr += prodotto + ", " + str(magazzino[categoria].get(prodotto)) + "pz\n"
+    
+    return prodottiStr
+    
+def aggiungiCategoria(magazzino: dict, categoria: str) -> dict:
+    magazzino[categoria] = {}
+    
+    f = open("dati/" + categoria + ".csv", 'a')
+    f.close()
+    
+    return magazzino
+              
+def rimuoviCategoria(magazzino: dict, categoria: str) -> dict:
+    magazzino[categoria] = {}
+    
+    os.remove("dati/" + categoria + ".csv")
+    
+    return magazzino
+    
 def esci():
+    os.system("cls")
     print("Grazie per avermi utilizzato! Esco tra 3 secondi...")
     time.sleep(3)
     sys.exit()
