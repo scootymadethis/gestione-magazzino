@@ -14,19 +14,10 @@ def main():
 
         match scelta:
             case "1":
-                categorieDisponibli = magazzino.keys()
+                categorieDisponibili = list(magazzino.keys())
                 
                 os.system("cls")
-                print("Categorie disponibili:")
-                
-                for k in categorieDisponibli:
-                    print(k)
-                
-                categoria = input("\nInserisci il nome della categoria da modificare: ")
-                
-                while not categorieDisponibli.__contains__(categoria):
-                    print("Devi inserire una categoria valida!")
-                    categoria = input("\nInserisci il nome della categoria da modificare: ")
+                categoria = funzioni.chiediCategoria(categorieDisponibili)
                     
                 prodottiDisponibili = magazzino[categoria].keys()
                 
@@ -36,11 +27,11 @@ def main():
                 for k in prodottiDisponibili:
                     print(k)
                     
-                prodotto = input("\nInserisci il nome del prodotto da modificare: ")
+                prodotto = input("\nInserisci il nome del prodotto da modificare: ").lower().capitalize()
                 
                 while not prodottiDisponibili.__contains__(prodotto):
                     print("Devi inserire un prodotto valido!")
-                    prodotto = input("\nInserisci il nome del prodotto da modificare: ")
+                    prodotto = input("\nInserisci il nome del prodotto da modificare: ").lower().capitalize()
                     
                 qtaProdotto = magazzino[categoria].get(prodotto)
                     
@@ -56,6 +47,11 @@ def main():
                 qtaNuova = int(qtaNuova)
                 
                 funzioni.modificaQta(magazzino, categoria, prodotto, qtaNuova)
+
+                print("\nQuantità aggiornata con successo!")
+
+                funzioni.salvaMagazzino(magazzino)
+                os.system("pause")
             case "2":
                 os.system("cls")
                 
@@ -68,22 +64,13 @@ def main():
                     print("Devi inserire un'opzione valida!")
                     aggiungiRimuovi = input("\nScegli un'opzione: ")
                     
-                categorieDisponibli = magazzino.keys()
+                categorieDisponibili = list(magazzino.keys())
                 
                 os.system("cls")
-                print("Categorie disponibili:")
-                
-                for k in categorieDisponibli:
-                    print(k)
-                
-                categoria = input("\nInserisci il nome della categoria: ")
-                
-                while not categorieDisponibli.__contains__(categoria):
-                    print("Devi inserire una categoria valida!")
-                    categoria = input("\nInserisci il nome della categoria: ")
+                categoria = funzioni.chiediCategoria(categorieDisponibili)
                     
                 if aggiungiRimuovi == "1":
-                    prodotto = input("\nInserisci il nome del prodotto: ")
+                    prodotto = input("\nInserisci il nome del prodotto: ").lower().capitalize()
                     
                     qtaProdotto = input("\nInserisci la quantità del nuovo prodotto: ")
                     
@@ -104,30 +91,22 @@ def main():
                     for k in prodottiDisponibili:
                         print(k)
                         
-                    prodotto = input("\nInserisci il nome del prodotto da rimuovere: ")
+                    prodotto = input("\nInserisci il nome del prodotto da rimuovere: ").lower().capitalize()
                     
                     while not prodottiDisponibili.__contains__(prodotto):
                         print("Devi inserire un prodotto valido!")
-                        prodotto = input("\nInserisci il nome del prodotto da rimuovere: ")
+                        prodotto = input("\nInserisci il nome del prodotto da rimuovere: ").lower().capitalize()
                     
                     magazzino = funzioni.rimuoviArticolo(magazzino, categoria, prodotto)
                     print("\nProdotto rimosso con successo!")
                     
+                funzioni.salvaMagazzino(magazzino)
                 os.system("pause")
             case "3":
-                categorieDisponibli = magazzino.keys()
+                categorieDisponibili = list(magazzino.keys())
                 
                 os.system("cls")
-                print("Categorie disponibili:")
-                
-                for k in categorieDisponibli:
-                    print(k)
-                
-                categoria = input("\nInserisci il nome della categoria: ")
-                
-                while not categorieDisponibli.__contains__(categoria):
-                    print("Devi inserire una categoria valida!")
-                    categoria = input("\nInserisci il nome della categoria: ")
+                categoria = funzioni.chiediCategoria(categorieDisponibili)
                 
                 articoliCategoria = funzioni.stampaArticoliCategoria(magazzino, categoria)
 
@@ -136,6 +115,7 @@ def main():
                 print(f"Prodotti nella categoria '{categoria}':\n")
                 print(articoliCategoria)
                 
+                funzioni.salvaMagazzino(magazzino)
                 os.system("pause")
             case "4":
                 os.system("cls")
@@ -150,43 +130,32 @@ def main():
                     aggiungiRimuovi = input("\nScegli un'opzione: ")
                     
                 if aggiungiRimuovi == "1":
-                    categorieEsistenti = magazzino.keys()
+                    categorieEsistenti = list(magazzino.keys())
                     
-                    os.system("cls")
-                    print("Categorie esistenti:")
-                    
-                    for k in categorieEsistenti:
-                        print(k)
-                    
-                    categoria = input("\nInserisci il nome della categoria: ")
-                    
+                    categoria = input("Inserisci la categoria da aggiungere: ")
+
                     while categorieEsistenti.__contains__(categoria):
                         print("Devi inserire una categoria non già esistente!")
-                        categoria = input("\nInserisci il nome della categoria: ")
+                        categoria = input("Inserisci la categoria da aggiungere: ")
                     
                     magazzino = funzioni.aggiungiCategoria(magazzino, categoria)
                     print("\nCategoria aggiunta con successo!")
                 else:
-                    categorieDisponibli = magazzino.keys()
+                    categorieDisponibili = list(magazzino.keys())
                     
-                    os.system("cls")
-                    print("Categorie disponibili:")
-                    
-                    for k in categorieDisponibli:
-                        print(k)
-                        
-                    categoria = input("\nInserisci il nome della categoria: ")
-                    
-                    while not categorieDisponibli.__contains__(categoria):
-                        print("Devi inserire una categoria valida!")
-                        categoria = input("\nInserisci il nome della categoria: ")
+                    categoria = funzioni.chiediCategoria(categorieDisponibili)
                     
                     magazzino = funzioni.rimuoviCategoria(magazzino, categoria)
                     print("\nCategoria rimossa con successo!")
                 
+                funzioni.salvaMagazzino(magazzino)
                 os.system("pause")
             case "5":
-                funzioni.salvaInfoMagazzino()
+                funzioni.salvaMagazzinoTxt(magazzino)
+
+                os.system("cls")
+                print("Magazzino salvato correttamente nel file magazzino.txt!")
+                os.system("pause")
             case "0":
                 esci = True
                 funzioni.esci()

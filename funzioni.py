@@ -77,3 +77,46 @@ def esci():
     print("Grazie per avermi utilizzato! Esco tra 3 secondi...")
     time.sleep(3)
     sys.exit()
+
+
+def chiediCategoria(categorieDisponibili: list) -> str:
+    str = "Categorie disponibili:\n"
+    
+    for k in categorieDisponibili:
+        str += k + "\n"
+
+    print(str)
+    
+    categoria = input("\nInserisci il nome della categoria: ")
+    
+    while not categorieDisponibili.__contains__(categoria):
+        print("Devi inserire una categoria valida!")
+        categoria = input("\nInserisci il nome della categoria: ")
+
+    return categoria
+
+def salvaMagazzino(magazzino: dict):
+    categorie = list(magazzino.keys())
+
+    for nomeCategoria in categorie:
+        categoria = magazzino.get(nomeCategoria)
+
+        with open("dati/" + nomeCategoria + ".csv", 'w') as f:
+            prodotti = list(categoria.keys())
+
+            for nomeProdotto in prodotti:
+                f.write(nomeProdotto + ";" + str(categoria.get(nomeProdotto)) + "\n")
+
+def salvaMagazzinoTxt(magazzino: dict):
+    categorie = list(magazzino.keys())
+
+    with open("magazzino.txt", 'w') as f:
+        for nomeCategoria in categorie:
+            f.write(f"\nCategoria '{nomeCategoria}'\n\n")
+
+            categoria = magazzino.get(nomeCategoria)
+
+            prodotti = list(categoria.keys())
+
+            for nomeProdotto in prodotti:
+                f.write(nomeProdotto + ", " + str(categoria.get(nomeProdotto)) + "pz\n")
