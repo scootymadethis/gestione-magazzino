@@ -22,16 +22,7 @@ def main():
                 prodottiDisponibili = magazzino[categoria].keys()
                 
                 os.system("cls")
-                print(f"Prodotti disponibili nella categoria '{categoria}':")
-                
-                for k in prodottiDisponibili:
-                    print(k)
-                    
-                prodotto = input("\nInserisci il nome del prodotto da modificare: ").lower().capitalize()
-                
-                while not prodottiDisponibili.__contains__(prodotto):
-                    print("Devi inserire un prodotto valido!")
-                    prodotto = input("\nInserisci il nome del prodotto da modificare: ").lower().capitalize()
+                prodotto = funzioni.chiediProdotto(categoria, prodottiDisponibili)
                     
                 qtaProdotto = magazzino[categoria].get(prodotto)
                     
@@ -86,16 +77,7 @@ def main():
                     prodottiDisponibili = magazzino[categoria].keys()
                     
                     os.system("cls")
-                    print(f"Prodotti disponibili nella categoria '{categoria}':")
-                    
-                    for k in prodottiDisponibili:
-                        print(k)
-                        
-                    prodotto = input("\nInserisci il nome del prodotto da rimuovere: ").lower().capitalize()
-                    
-                    while not prodottiDisponibili.__contains__(prodotto):
-                        print("Devi inserire un prodotto valido!")
-                        prodotto = input("\nInserisci il nome del prodotto da rimuovere: ").lower().capitalize()
+                    prodotto = funzioni.chiediProdotto(categoria, prodottiDisponibili)
                     
                     magazzino = funzioni.rimuoviArticolo(magazzino, categoria, prodotto)
                     print("\nProdotto rimosso con successo!")
@@ -151,6 +133,7 @@ def main():
                 funzioni.salvaMagazzino(magazzino)
                 os.system("pause")
             case "5":
+                funzioni.salvaMagazzino(magazzino)
                 funzioni.salvaMagazzinoTxt(magazzino)
 
                 os.system("cls")

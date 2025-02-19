@@ -90,13 +90,29 @@ def chiediCategoria(categorieDisponibili: list) -> str:
 
     print(str)
     
-    categoria = input("\nInserisci il nome della categoria: ")
+    categoria = input("\nInserisci il nome della categoria: ").lower()
     
     while not categorieDisponibili.__contains__(categoria):
         print("Devi inserire una categoria valida!")
-        categoria = input("\nInserisci il nome della categoria: ")
+        categoria = input("\nInserisci il nome della categoria: ").lower()
 
     return categoria
+
+def chiediProdotto(categoria: str, prodottiDisponibili: list) -> str:
+    str = f"Prodotti disponibili nella categoria '{categoria}':\n"
+                    
+    for k in prodottiDisponibili:
+        str += k + "\n"
+        
+    print(str)
+
+    prodotto = input("\nInserisci il nome del prodotto da rimuovere: ").lower().capitalize()
+    
+    while not prodottiDisponibili.__contains__(prodotto):
+        print("Devi inserire un prodotto valido!")
+        prodotto = input("\nInserisci il nome del prodotto da rimuovere: ").lower().capitalize()
+
+    return prodotto
 
 def salvaMagazzino(magazzino: dict):
     current_dir = os.getcwd()
