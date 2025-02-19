@@ -3,11 +3,12 @@ import os
 import time
 
 def prendiMagazzino() -> dict:
-    files = os.listdir('dati')
+    current_dir = os.getcwd()
+    files = os.listdir(current_dir + '/dati')
     magazzino = {}
     
     for categoria in files:    
-        with open("dati/" + categoria) as f:
+        with open(current_dir + "/dati/" + categoria) as f:
             categoria = categoria.split('.')[0]
             magazzino[categoria] = {}
             
@@ -58,17 +59,19 @@ def stampaArticoliCategoria(magazzino: dict, categoria: str) -> str:
     return prodottiStr
     
 def aggiungiCategoria(magazzino: dict, categoria: str) -> dict:
+    current_dir = os.getcwd()
     magazzino[categoria] = {}
     
-    f = open("dati/" + categoria + ".csv", 'a')
+    f = open(current_dir + "/dati/" + categoria + ".csv", 'a')
     f.close()
     
     return magazzino
               
 def rimuoviCategoria(magazzino: dict, categoria: str) -> dict:
+    current_dir = os.getcwd()
     magazzino[categoria] = {}
     
-    os.remove("dati/" + categoria + ".csv")
+    os.remove(current_dir + "/dati/" + categoria + ".csv")
     
     return magazzino
     
@@ -96,12 +99,13 @@ def chiediCategoria(categorieDisponibili: list) -> str:
     return categoria
 
 def salvaMagazzino(magazzino: dict):
+    current_dir = os.getcwd()
     categorie = list(magazzino.keys())
 
     for nomeCategoria in categorie:
         categoria = magazzino.get(nomeCategoria)
 
-        with open("dati/" + nomeCategoria + ".csv", 'w') as f:
+        with open(current_dir + "/dati/" + nomeCategoria + ".csv", 'w') as f:
             prodotti = list(categoria.keys())
 
             for nomeProdotto in prodotti:
