@@ -57,16 +57,25 @@ def stampaArticoliCategoria(magazzino: dict, categoria: str) -> str:
         prodottiStr += prodotto + ", " + str(magazzino[categoria].get(prodotto)) + "pz\n"
     
     return prodottiStr
-    
-def aggiungiCategoria(magazzino: dict, categoria: str) -> dict:
+
+def categoriaEsiste(categorieEsistenti: list, categoria: str) -> bool:
+    exists = False
+
+    if categorieEsistenti.__contains__(categoria):
+        exists = True
+
+    return exists
+
+def aggiungiCategoria(magazzino: dict, categoria: str, categorieEsistenti: list) -> dict:
     current_dir = os.getcwd()
-    magazzino[categoria] = {}
+
+    if categorieEsistenti.__contains__(categoria):
+        magazzino[categoria] = {}
     
-    f = open(current_dir + "/dati/" + categoria + ".csv", 'a')
-    f.close()
-    
-    return magazzino
-              
+        f = open(current_dir + "/dati/" + categoria + ".csv", 'a')
+        f.close()
+
+    return magazzino      
 def rimuoviCategoria(magazzino: dict, categoria: str) -> dict:
     current_dir = os.getcwd()
     magazzino[categoria] = {}
@@ -76,7 +85,6 @@ def rimuoviCategoria(magazzino: dict, categoria: str) -> dict:
     return magazzino
     
 def esci():
-    os.system("cls")
     print("Grazie per avermi utilizzato! Esco tra 3 secondi...")
     time.sleep(3)
     sys.exit()
@@ -113,6 +121,21 @@ def chiediProdotto(categoria: str, prodottiDisponibili: list) -> str:
         prodotto = input("\nInserisci il nome del prodotto da rimuovere: ").lower().capitalize()
 
     return prodotto
+
+def chiediQta(magazzino: dict, categoria: str, prodotto: str) -> int:
+    qtaProdotto = magazzino[categoria].get(prodotto)
+                    
+    print(f"Quantità dell'articolo '{prodotto}': {qtaProdotto}")
+    
+    qtaNuova = input("\nInserisci la nuova quantità del prodotto: ")
+    
+    while not qtaNuova.isnumeric():
+        print("Devi inserire un numero valido intero!")
+        qtaNuova = input("\nInserisci la nuova quantità del prodotto: ")
+    
+    qtaNuova = int(qtaNuova)
+
+    return qtaNuova
 
 def salvaMagazzino(magazzino: dict):
     current_dir = os.getcwd()

@@ -1,50 +1,44 @@
 import funzioni
 import os
 
+def cls():
+    os.system("cls")
+
+def pause():
+    os.system("pause")
+
 def main():
     magazzino = funzioni.prendiMagazzino()
     
     esci = False
 
     while not esci:
-        os.system("cls")
+        cls()
         funzioni.stampaMenu()
 
         scelta = input("Scegli un'opzione: ")
 
         match scelta:
             case "1":
+                cls()
+
                 categorieDisponibili = list(magazzino.keys())
-                
-                os.system("cls")
                 categoria = funzioni.chiediCategoria(categorieDisponibili)
-                    
-                prodottiDisponibili = magazzino[categoria].keys()
                 
-                os.system("cls")
+                cls()
+                prodottiDisponibili = list(magazzino[categoria].keys())
                 prodotto = funzioni.chiediProdotto(categoria, prodottiDisponibili)
-                    
-                qtaProdotto = magazzino[categoria].get(prodotto)
-                    
-                os.system("cls")
-                print(f"Quantità dell'articolo '{prodotto}': {qtaProdotto}")
                 
-                qtaNuova = input("\nInserisci la nuova quantità del prodotto: ")
-                
-                while not qtaNuova.isnumeric():
-                    print("Devi inserire un numero valido intero!")
-                    qtaNuova = input("\nInserisci la nuova quantità del prodotto: ")
-                
-                qtaNuova = int(qtaNuova)
+                qtaNuova = funzioni.chiediQta(magazzino, categoria, prodotto)
                 
                 funzioni.modificaQta(magazzino, categoria, prodotto, qtaNuova)
 
                 print("\nQuantità aggiornata con successo!")
 
                 funzioni.salvaMagazzino(magazzino)
-                os.system("pause")
+                pause()
             case "2":
-                os.system("cls")
+                cls()
                 
                 print("Opzioni:")
                 print("[1] Aggiungi un prodotto")
@@ -57,7 +51,6 @@ def main():
                     
                 categorieDisponibili = list(magazzino.keys())
                 
-                os.system("cls")
                 categoria = funzioni.chiediCategoria(categorieDisponibili)
                     
                 if aggiungiRimuovi == "1":
@@ -76,31 +69,29 @@ def main():
                 else:
                     prodottiDisponibili = magazzino[categoria].keys()
                     
-                    os.system("cls")
                     prodotto = funzioni.chiediProdotto(categoria, prodottiDisponibili)
                     
                     magazzino = funzioni.rimuoviArticolo(magazzino, categoria, prodotto)
                     print("\nProdotto rimosso con successo!")
                     
                 funzioni.salvaMagazzino(magazzino)
-                os.system("pause")
+                pause()
             case "3":
+                cls()
+
                 categorieDisponibili = list(magazzino.keys())
                 
-                os.system("cls")
                 categoria = funzioni.chiediCategoria(categorieDisponibili)
                 
                 articoliCategoria = funzioni.stampaArticoliCategoria(magazzino, categoria)
-
-                os.system("cls")
 
                 print(f"Prodotti nella categoria '{categoria}':\n")
                 print(articoliCategoria)
                 
                 funzioni.salvaMagazzino(magazzino)
-                os.system("pause")
+                pause()
             case "4":
-                os.system("cls")
+                cls()
                 
                 print("Opzioni:")
                 print("[1] Aggiungi una categoria")
@@ -116,9 +107,8 @@ def main():
                     
                     categoria = input("Inserisci la categoria da aggiungere: ")
 
-                    while categorieEsistenti.__contains__(categoria):
+                    while funzioni.categoriaEsiste(categorieEsistenti, categoria):
                         print("Devi inserire una categoria non già esistente!")
-                        categoria = input("Inserisci la categoria da aggiungere: ")
                     
                     magazzino = funzioni.aggiungiCategoria(magazzino, categoria)
                     print("\nCategoria aggiunta con successo!")
@@ -131,15 +121,18 @@ def main():
                     print("\nCategoria rimossa con successo!")
                 
                 funzioni.salvaMagazzino(magazzino)
-                os.system("pause")
+                pause()
             case "5":
+                cls()
+
                 funzioni.salvaMagazzino(magazzino)
                 funzioni.salvaMagazzinoTxt(magazzino)
 
-                os.system("cls")
                 print("Magazzino salvato correttamente nel file magazzino.txt!")
-                os.system("pause")
+                pause()
             case "0":
+                cls()
+
                 esci = True
                 funzioni.esci()
 
